@@ -2,9 +2,9 @@ from redis import Redis
 from redis.exceptions import ConnectionError
 from redis.typing import EncodableT, KeyT
 
-from utils import backoff
+from utils.backoff import backoff
 
-from .base import BaseConfig
+from base import BaseConfig
 from pydantic import AnyUrl
 
 

@@ -21,5 +21,5 @@ class RedisStorage(BaseStorage):
     def retrieve_state(self, key: str) -> Optional[str]:
         """Получить состояние из хранилища.
         """
-        result = self.redis.get(key)
-        return result.decode() if result else None
+        value = self.redis.get(key)
+        return value.decode() if value else None

@@ -34,13 +34,13 @@ def backoff(
             while attempts < max_attempts:
                 try:
                     return func(*args, **kwargs)
-                except error_connection as e:
+                except error_connection as error:
                     attempts += 1
                     sleep_time = min(sleep_time * 2**factor, border_sleep_time)
 
                     logger.exception(
                         'Ошибка подключения в функции "%s": %s. Повторная попытка через %s секунд... (Попытка %d/%d)',
-                        func.__name__, e, sleep_time, attempts, max_attempts
+                        func.__name__, error, sleep_time, attempts, max_attempts
                     )
                     time.sleep(sleep_time)
 
