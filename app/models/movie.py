@@ -4,7 +4,7 @@ from .person import PersonInfoDTO
 from mixins import UUIDMixin
 
 
-class Movie(UUIDMixin):
+class MovieDTO(UUIDMixin):
     """Модель фильма"""
     title: str
     imdb_rating: float | None = Field(default=None)
