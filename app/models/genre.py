@@ -5,4 +5,4 @@ from .mixins import UUIDMixin
 
 class GenreDTO(UUIDMixin):
     """Модель жанров"""
-    name: str = Field(default_factory=str)
+    genre_name: str = Field(default_factory=str)
