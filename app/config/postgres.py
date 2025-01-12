@@ -11,7 +11,6 @@ class PostgresClient(BaseConfig):
     """Класс клиента для работы с PostgreSQL."""
 
     def __init__(self, dsn: PostgresDsn, connection=None):
-        """Initialization of Postgres client."""
 
         super().__init__(dsn, connection)
 
