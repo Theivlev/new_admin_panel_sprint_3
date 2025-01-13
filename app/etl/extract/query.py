@@ -51,3 +51,12 @@ class Query:
             LIMIT 100;
             '''
         ), (modified_time,)
+
+    def check_modified(table, last_mod):
+        return SQL(
+            '''
+            SELECT MAX(modified) AS last_modified
+            FROM %s
+            WHERE modified > %s
+            ''', (table, last_mod)
+        )
