@@ -8,7 +8,7 @@ from base import BaseConfig
 from pydantic import AnyUrl
 
 
-class RedisConfig(BaseConfig):
+class RedisClient(BaseConfig):
     """Конфигурация и операции клиента Redis."""
 
     def __init__(self, dsn: AnyUrl):
