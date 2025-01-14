@@ -4,7 +4,7 @@ from pydantic import PostgresDsn
 
 from utils.backoff import backoff
 
-from base import BaseConfig
+from .base import BaseConfig
 
 
 class PostgresClient(BaseConfig):

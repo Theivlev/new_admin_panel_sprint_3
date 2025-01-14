@@ -1,6 +1,6 @@
-from config.redis import RedisConfig
+from config.redis import RedisClient
 
-from base_storage import BaseStorage
+from .base_storage import BaseStorage
 
 
 from dataclasses import dataclass
@@ -11,7 +11,7 @@ from typing import Optional
 class RedisStorage(BaseStorage):
     """Хранилище состояния в Redis."""
 
-    redis: RedisConfig
+    redis: RedisClient
 
     def save_state(self, key: str, value: str) -> None:
         """Сохранить состояние в хранилище.

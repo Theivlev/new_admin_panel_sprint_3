@@ -12,9 +12,9 @@ from utils.logger import LOGGING_CONFIG
 from models.etl import ETL
 from config.settings import Settings
 
-from extract.data_extract import PostgresExtractor
-from load.data_loader import ElasticsearchLoader
-from transform.data_transform import DataTransform
+from etl.extract.data_extract import PostgresExtractor
+from etl.load.data_loader import ElasticsearchLoader
+from etl.transform.data_transform import DataTransform
 
 logger = logging.getLogger(__name__)
 logging_config.dictConfig(LOGGING_CONFIG)

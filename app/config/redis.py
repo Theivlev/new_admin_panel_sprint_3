@@ -4,7 +4,7 @@ from redis.typing import EncodableT, KeyT
 
 from utils.backoff import backoff
 
-from base import BaseConfig
+from .base import BaseConfig
 from pydantic import AnyUrl
 
 

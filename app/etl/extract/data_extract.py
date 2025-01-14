@@ -11,7 +11,7 @@ from utils.logger import LOGGING_CONFIG
 from utils.backoff import backoff
 from dataclasses import dataclass
 from models.etl import ETL
-from extract.query import Query
+from etl.extract.query import Query
 
 logger = logging.getLogger(__name__)
 logging_config.dictConfig(LOGGING_CONFIG)

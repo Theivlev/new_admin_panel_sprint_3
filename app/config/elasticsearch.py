@@ -2,7 +2,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch.exceptions import ConnectionError
 
 from utils.backoff import backoff
-from base import BaseConfig
+from .base import BaseConfig
 
 
 class ElasticsearchClient(BaseConfig):
