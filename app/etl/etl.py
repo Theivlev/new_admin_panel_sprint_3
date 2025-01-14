@@ -45,7 +45,7 @@ def etl(etl: ETL, settings: Settings) -> None:
         transformer = DataTransform(model=etl.model)
 
         loader = ElasticsearchLoader(
-            elasticsearch_client=elasticsearch_client,
+            client=elasticsearch_client,
             state=state,
             index=etl.index,
             batch_size=settings.batch_size
