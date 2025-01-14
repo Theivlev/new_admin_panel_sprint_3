@@ -27,21 +27,21 @@ class PostgresExtractor:
 
     @backoff(ConnectionFailure)
     def check_modified(self, prev_mod: str) -> str | None:
-
+        """Проверяет, были ли изменены данные в таблице.
+        """
         self.postgres_client.cursor.execute(
             Query.check_modified(self.etl.table, prev_mod)
-
         )
         return self.postgres_client.cursor.fetchone()[0]
 
     @backoff(ConnectionFailure)
     def extract(self):
-        """Extract movies from Postgres."""
+        """Извлекает данные о фильмах из Postgres."""
 
         prev_mod = self.state.get_state(self.etl.index)
 
         if last_modified := self.check_modified(prev_mod):
-            logger.info('Extracting new %s data', self.etl.index)
+            logger.info('Извлечение новых данных для %s', self.etl.index)
 
             self.postgres_client.cursor.execute(
                 Query.check_modified(self.etl.table, prev_mod)

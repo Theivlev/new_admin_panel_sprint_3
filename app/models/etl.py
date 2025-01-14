@@ -10,9 +10,9 @@ from models.person import PersonInfoDTO
 
 
 class Indexes(Enum):
-    GENRES = 'genres'
-    MOVIES = 'movies'
-    PERSONS = 'persons'
+    GENRES = 'Genres'
+    MOVIES = 'Movies'
+    PERSONS = 'Persons'
 
 
 class Tables(Enum):

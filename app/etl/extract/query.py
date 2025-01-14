@@ -52,6 +52,7 @@ class Query:
             '''
         ), (modified_time,)
 
+    @staticmethod
     def check_modified(table, last_mod):
         return SQL(
             '''
