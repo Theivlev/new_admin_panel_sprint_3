@@ -7,12 +7,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /opt/app
 
 
-RUN apt update && apt install -y --no-install-recommends \
-    gcc libpq-dev curl netcat \
-    && rm -rf /var/lib/apt/lists/* \
-    && groupadd -r web \
-    && useradd -d /opt/app -r -g web web
-
 COPY ./requirements.txt .
 
 

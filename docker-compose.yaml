@@ -1,3 +1,5 @@
+version: '3.8'  # Убедитесь, что у вас указан правильный формат версии
+
 services:
   etl:
     build:
@@ -14,16 +16,16 @@ services:
     container_name: redis
     image: redislabs/redismod:latest
     expose:
-    - "6379"
+      - "6379"
     restart: always
     volumes:
-      - redis:/data
+      - redis_data:/data  # Исправлено имя тома
 
   elasticsearch:
     image: elasticsearch:8.7.0
     restart: always
     volumes:
-    - elasticsearch:/usr/share/elasticsearch/data
+      - elasticsearch:/usr/share/elasticsearch/data
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
