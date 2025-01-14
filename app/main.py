@@ -15,6 +15,11 @@ if __name__ == '__main__':
     logger = logging.getLogger(__name__)
     logging_config.dictConfig(LOGGING_CONFIG)
 
-    MOVIES = ETL(Indexes.MOVIES, Tables.FILM_WORK, Query.get_films_query(), MovieDTO)
+    MOVIES = ETL(
+        Indexes.MOVIES,
+        Tables.FILM_WORK,
+        Query.get_films_query(),
+        MovieDTO
+    )
     logger.info('Старт ETL')
     etl(MOVIES, settings)

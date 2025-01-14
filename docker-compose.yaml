@@ -1,0 +1,24 @@
+services:
+  etl:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - elasticsearch
+      - redis
+
+    redis:
+      container_name: redis
+      image: redislabs/redismod:latest
+      expose:
+      - "6379"
+      restart: always
+      volumes:
+        - redis:/data
+
+volumes:
+  elasticsearch:
+  etl-redis:
