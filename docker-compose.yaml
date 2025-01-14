@@ -19,6 +19,18 @@ services:
       volumes:
         - redis:/data
 
+    elasticsearch:
+      image: elasticsearch:8.7.0
+      restart: always
+      volumes:
+        - elasticsearch:/usr/share/elasticsearch/data
+      environment:
+        - discovery.type=single-node
+        - xpack.security.enabled=false
+        - ES_JAVA_OPTS=-Xms2048m -Xmx2048m
+      ports:
+        - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
+  
 volumes:
   elasticsearch:
-  etl-redis:
+  redis_data:

@@ -1,5 +1,4 @@
 import logging
-import threading
 import time
 from contextlib import closing
 from datetime import datetime
