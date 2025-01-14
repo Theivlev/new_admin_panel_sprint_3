@@ -3,15 +3,6 @@
 set -e
 
 
-wait_for_postgres() {
-  echo "Waiting for PostgreSQL..."
-  while ! nc -z "${POSTGRES_HOST}" "${POSTGRES_PORT}"; do
-    sleep 0.1
-  done
-  echo "PostgreSQL started"
-}
-
-
 wait_for_elasticsearch() {
   echo "Waiting for Elasticsearch to start..."
   until curl -s "${ELASTICSEARCH_DSN}/_cat/health?h=status" | grep -E -q "(yellow|green)"; do
@@ -160,11 +151,11 @@ create_movies_index() {
 }
 
 
-wait_for_postgres
+
 wait_for_elasticsearch
 
 
 create_movies_index
 
 
-python app/main.py
+python /opt/app/main.py

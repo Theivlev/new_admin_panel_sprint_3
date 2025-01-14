@@ -1,6 +1,6 @@
 from uuid import UUID, uuid4
 from pydantic import Field
-from dto import AbstractDTO
+from .dto import AbstractDTO
 
 
 class UUIDMixin(AbstractDTO):
