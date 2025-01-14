@@ -54,7 +54,7 @@ def etl(etl: ETL, settings: Settings) -> None:
             for data, last_modified in extractor.extract():
                 if data:
                     transformed_data = transformer.data_transform(data)
-                    loader.load(transformed_data, last_modified)
+                    loader.bulk_load(transformed_data, last_modified)
 
             logger.info(
                 '%s ETL завершён, засыпаем на %s с',
