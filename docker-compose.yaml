@@ -10,26 +10,26 @@ services:
       - elasticsearch
       - redis
 
-    redis:
-      container_name: redis
-      image: redislabs/redismod:latest
-      expose:
-      - "6379"
-      restart: always
-      volumes:
-        - redis:/data
+  redis:
+    container_name: redis
+    image: redislabs/redismod:latest
+    expose:
+    - "6379"
+    restart: always
+    volumes:
+      - redis:/data
 
-    elasticsearch:
-      image: elasticsearch:8.7.0
-      restart: always
-      volumes:
-        - elasticsearch:/usr/share/elasticsearch/data
-      environment:
-        - discovery.type=single-node
-        - xpack.security.enabled=false
-        - ES_JAVA_OPTS=-Xms2048m -Xmx2048m
-      ports:
-        - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
+  elasticsearch:
+    image: elasticsearch:8.7.0
+    restart: always
+    volumes:
+    - elasticsearch:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms2048m -Xmx2048m
+    ports:
+      - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
   
 volumes:
   elasticsearch:
