@@ -11,15 +11,15 @@ from typing import Optional
 class RedisStorage(BaseStorage):
     """Хранилище состояния в Redis."""
 
-    redis: RedisClient
+    redis_client: RedisClient
 
     def save_state(self, key: str, value: str) -> None:
         """Сохранить состояние в хранилище.
         """
-        self.redis.set(key, value)
+        self.redis_client.set(key, value)
 
     def retrieve_state(self, key: str) -> Optional[str]:
         """Получить состояние из хранилища.
         """
-        value = self.redis.get(key)
+        value = self.redis_client.get(key)
         return value.decode() if value else None

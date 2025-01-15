@@ -23,7 +23,7 @@ class Tables(Enum):
 
 @dataclass
 class ETL:
-    index: Indexes
-    table: Tables
+    index: str
+    table: str
     #  query: SQL
     model: Type[GenreDTO | MovieDTO | PersonInfoDTO]

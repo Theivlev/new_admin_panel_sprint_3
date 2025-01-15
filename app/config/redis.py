@@ -11,15 +11,6 @@ from pydantic import AnyUrl
 class RedisClient(BaseConfig):
     """Конфигурация и операции клиента Redis."""
 
-    def __init__(self, dsn: AnyUrl):
-        """Инициализация RedisConfig с DSN.
-
-        Параметры:
-            dsn (AnyUrl): Строка подключения к Redis.
-        """
-        super().__init__(dsn)
-        self.redis_client: Redis | None = None
-
     @backoff(ConnectionError)
     def reconnect(self) -> Redis:
         """Переподключение к Redis, если соединение отсутствует.
@@ -27,13 +18,7 @@ class RedisClient(BaseConfig):
         Возвращает:
             Redis: Клиент Redis.
         """
-        if not hasattr(self, 'redis_client') or self.redis_client is None:
-            self.redis_client = Redis(
-                host=self.dsn.host or 'localhost',
-                port=int(self.dsn.port) if self.dsn.port else 6379,
-                db=int(self.dsn.path[1:]) if self.dsn.path else 0
-            )
-        return self.redis_client
+        return Redis(host=self.dsn.host, port=int(self.dsn.port), db=self.dsn.path[1:])
 
     @backoff(ConnectionError)
     def set(self, key: KeyT, value: EncodableT, *args, **kwargs) -> None:

@@ -16,8 +16,8 @@ if __name__ == '__main__':
     logging_config.dictConfig(LOGGING_CONFIG)
 
     MOVIES = ETL(
-        Indexes.MOVIES,
-        Tables.FILM_WORK,
+        Indexes.MOVIES.value,
+        Tables.FILM_WORK.value,
         #  Query.get_films_query(),
         MovieDTO
     )

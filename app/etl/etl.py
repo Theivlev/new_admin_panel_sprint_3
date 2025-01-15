@@ -4,7 +4,6 @@ from contextlib import closing
 from datetime import datetime
 from logging import config as logging_config
 
-
 from config import ElasticsearchClient, PostgresClient, RedisClient
 from state.state import State
 from state.redis_storage import RedisStorage
@@ -29,10 +28,26 @@ def etl(etl: ETL, settings: Settings) -> None:
          closing(PostgresClient(settings.postgres_dsn)) as postgres_client, \
          closing(RedisClient(settings.redis_dsn)) as redis_client:
 
+        # Логируем информацию о подключении к базам данных
+        logger.info('Подключение к Elasticsearch: %s', settings.elasticsearch_dsn)
+        logger.info('Подключение к PostgreSQL: %s', settings.postgres_dsn)
+        try:
+            postgres_client.cursor.execute("""
+                SELECT table_schema, table_name
+                FROM information_schema.tables
+                WHERE table_type='BASE TABLE'
+                ORDER BY table_schema, table_name;
+            """)
+            tables = postgres_client.cursor.fetchall()
+            logger.info('Список таблиц и схем:')
+            for schema, table in tables:
+                logger.info('Схема: %s, Таблица: %s', schema, table)
+        except Exception as e:
+            logger.error('Ошибка при получении таблиц: %s', e)
         state = State(storage=RedisStorage(redis_client=redis_client))
 
-        if not state.get_state(key=etl.index):
-            state.set_state(key=etl.index, value=str(datetime.min))
+        if not state.get_state(key=str(etl.index)):
+            state.set_state(key=str(etl.index), value=str(datetime.min))
 
         extractor = PostgresExtractor(
             postgres_client=postgres_client,
