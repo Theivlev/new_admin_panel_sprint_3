@@ -9,6 +9,7 @@ services:
     env_file:
       - .env
     depends_on:
+      - theatre-db
       - elasticsearch
       - redis
 
@@ -30,6 +31,8 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - ES_JAVA_OPTS=-Xms2048m -Xmx2048m
+    depends_on:
+      - theatre-db
     ports:
       - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
 
@@ -48,11 +51,7 @@ services:
         - ./database/database_dump.sql:/docker-entrypoint-initdb.d/init.sql
 
 
-
-
-
-
-
 volumes:
+  postgres_data:
   elasticsearch:
   redis_data:
