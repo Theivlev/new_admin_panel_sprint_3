@@ -2,7 +2,6 @@
 
 set -e
 
-
 wait_for_elasticsearch() {
   echo "Waiting for Elasticsearch to start..."
   until curl -s "${ELASTICSEARCH_DSN}/_cat/health?h=status" | grep -E -q "(yellow|green)"; do
@@ -10,7 +9,6 @@ wait_for_elasticsearch() {
   done
   echo "Elasticsearch started."
 }
-
 
 create_movies_index() {
   local index_name="movies"
@@ -150,12 +148,6 @@ create_movies_index() {
   fi
 }
 
-
-
 wait_for_elasticsearch
-
-
 create_movies_index
-
-
 python /opt/app/main.py
