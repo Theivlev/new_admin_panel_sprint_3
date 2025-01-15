@@ -32,7 +32,27 @@ services:
       - ES_JAVA_OPTS=-Xms2048m -Xmx2048m
     ports:
       - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
-  
+
+
+  theatre-db:
+      image: postgres:16
+      ports:
+        - "5432:5432"
+      environment:
+        - POSTGRES_PASSWORD=qwerty1234
+        - POSTGRES_USER=postgres
+        - POSTGRES_DB=project_collection
+      restart: always
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+        - ./database/database_dump.sql:/docker-entrypoint-initdb.d/init.sql
+
+
+
+
+
+
+
 volumes:
   elasticsearch:
   redis_data:
