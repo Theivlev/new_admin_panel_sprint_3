@@ -18,7 +18,7 @@ if __name__ == '__main__':
     MOVIES = ETL(
         Indexes.MOVIES,
         Tables.FILM_WORK,
-        Query.get_films_query(),
+        #  Query.get_films_query(),
         MovieDTO
     )
     logger.info('Старт ETL')

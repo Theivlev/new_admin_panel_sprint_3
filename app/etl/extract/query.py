@@ -22,24 +22,41 @@ class Query:
         return SQL(
             '''
             SELECT
-                fw.id,
-                fw.title,
-                fw.description,
-                fw.rating,
-                fw.type,
-                fw.created,
-                fw.modified,
-                COALESCE (
-                    json_agg(
+                fw.id AS id,
+                fw.title AS title,
+                fw.description AS description,
+                fw.rating AS imdb_rating,
+                COALESCE(
+                    jsonb_agg(
                         DISTINCT jsonb_build_object(
-                            'person_role', pfw.role,
-                            'person_id', p.id,
-                            'person_name', p.full_name
+                            'id', p.id,
+                            'name', p.full_name
                         )
-                    ) FILTER (WHERE p.id IS NOT NULL),
+                    ) FILTER (WHERE pfw.role = 'actor'),
                     '[]'
-                ) AS persons,
-                array_agg(DISTINCT g.name) AS genres
+                ) AS actors,
+                COALESCE(
+                    jsonb_agg(
+                        DISTINCT jsonb_build_object(
+                            'id', p.id,
+                            'name', p.full_name
+                        )
+                    ) FILTER (WHERE pfw.role = 'director'),
+                    '[]'
+                ) AS directors,
+                COALESCE(
+                    jsonb_agg(
+                        DISTINCT jsonb_build_object(
+                            'id', p.id,
+                            'name', p.full_name
+                        )
+                    ) FILTER (WHERE pfw.role = 'writer'),
+                    '[]'
+                ) AS writers,
+                array_agg(DISTINCT g.name) AS genres,
+                string_agg(DISTINCT p.full_name, ', ') FILTER (WHERE pfw.role = 'actor') AS actors_names,
+                string_agg(DISTINCT d.full_name, ', ') FILTER (WHERE pfw.role = 'director') AS directors_names,
+                string_agg(DISTINCT w.full_name, ', ') FILTER (WHERE pfw.role = 'writer') AS writers_names
             FROM content.film_work fw
             LEFT JOIN content.person_film_work pfw ON pfw.film_work_id = fw.id
             LEFT JOIN content.person p ON p.id = pfw.person_id

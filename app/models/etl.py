@@ -25,5 +25,5 @@ class Tables(Enum):
 class ETL:
     index: Indexes
     table: Tables
-    query: SQL
+    #  query: SQL
     model: Type[GenreDTO | MovieDTO | PersonInfoDTO]

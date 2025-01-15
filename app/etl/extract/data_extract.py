@@ -44,7 +44,7 @@ class PostgresExtractor:
             logger.info('Извлечение новых данных для %s', self.etl.index)
 
             self.postgres_client.cursor.execute(
-                Query.check_modified(self.etl.table, prev_mod)
+                Query.get_films_query(self.etl.table, prev_mod)
             )
 
             while data := self.postgres_client.cursor.fetchmany(
