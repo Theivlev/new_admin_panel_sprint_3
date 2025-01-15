@@ -3,12 +3,13 @@ from dataclasses import dataclass, field
 from pydantic import AnyUrl
 
 
-@dataclass
 class BaseConfig(abc.ABC):
     """Базовый класс для клиента."""
 
-    dsn: AnyUrl
-    connect: any = field(default=None, init=False)
+    def __init__(self, dsn: AnyUrl, connect: any = None):
+
+        self.dsn = dsn
+        self.connect = connect
 
     @abc.abstractmethod
     def reconnect(self) -> any:

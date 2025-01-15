@@ -9,7 +9,8 @@ class ElasticsearchClient(BaseConfig):
     """Класс для работы с Elasticsearch."""
 
     @backoff(ConnectionError)
-    def reconnect(self) -> Elasticsearch:
-        """Подключение к Elasticsearch"""
-
+    def reconnect(self):
+        """Подключение к Elasticsearch."""
+        if isinstance(self.dsn, str):
+            self.dsn = [self.dsn]
         return Elasticsearch(self.dsn)
