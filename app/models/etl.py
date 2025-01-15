@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Type
 
-from psycopg.sql import SQL
+from psycopg.sql import SQL # noqa
 
 from models.genre import GenreDTO
 from models.movie import MovieDTO
