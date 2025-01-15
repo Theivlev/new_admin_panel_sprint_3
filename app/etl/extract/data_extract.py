@@ -29,10 +29,21 @@ class PostgresExtractor:
     def check_modified(self, prev_mod: str) -> str | None:
         """Проверяет, были ли изменены данные в таблице.
         """
+        logger.info("Проверка изменений в таблице %s с предыдущей меткой времени %s", self.etl.table, prev_mod)
+
         self.postgres_client.cursor.execute(
             Query.check_modified(self.etl.table, prev_mod)
         )
-        return self.postgres_client.cursor.fetchone()[0]
+
+        result = self.postgres_client.cursor.fetchone()
+        
+        if result is None:
+            logger.warning("Результат запроса пустой для таблицы %s", self.etl.table)
+            return None
+        
+        last_modified = result[0]
+        logger.info("Последнее изменение в таблице %s: %s", self.etl.table, last_modified)
+        return last_modified
 
     @backoff(ConnectionFailure)
     def extract(self):

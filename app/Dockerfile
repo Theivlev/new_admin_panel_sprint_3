@@ -17,4 +17,4 @@ RUN chmod +x app.sh
 RUN echo "Содержимое директории /opt/app:" && ls -la /opt/app
 
 
-CMD ["tail", "-f", "/dev/null"]
+CMD ["bash", "app.sh"]
