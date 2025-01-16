@@ -11,7 +11,7 @@ from models.person import PersonInfoDTO
 
 class Indexes(Enum):
     GENRES = 'Genres'
-    MOVIES = 'Movies'
+    MOVIES = 'movies'
     PERSONS = 'Persons'
 
 

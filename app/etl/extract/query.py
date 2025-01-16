@@ -75,7 +75,6 @@ class Query:
             WHERE fw.modified > {modified_time}
             GROUP BY fw.id
             ORDER BY fw.modified
-            LIMIT 100;
             '''
         ).format(
             modified_time=modified_time

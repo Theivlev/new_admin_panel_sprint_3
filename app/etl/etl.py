@@ -14,7 +14,7 @@ from config.settings import Settings
 from etl.extract.data_extract import PostgresExtractor
 from etl.load.data_loader import ElasticsearchLoader
 from etl.transform.data_transform import DataTransform
-
+from elasticsearch.helpers import BulkIndexError
 logger = logging.getLogger(__name__)
 logging_config.dictConfig(LOGGING_CONFIG)
 
@@ -69,7 +69,12 @@ def etl(etl: ETL, settings: Settings) -> None:
             for data, last_modified in extractor.extract():
                 if data:
                     transformed_data = transformer.data_transform(data)
-                    loader.bulk_load(transformed_data, last_modified)
+                    try:
+                        loader.bulk_load(transformed_data, last_modified)
+                    except BulkIndexError as e:
+                        logger.error('Ошибка при индексации в Elasticsearch: %s', e)
+                        for error in e.errors:
+                            logger.error('Ошибка для документа ID=%s: %s', error['index']['_id'], error['index']['error'])
 
             logger.info(
                 '%s ETL завершён, засыпаем на %s с',
