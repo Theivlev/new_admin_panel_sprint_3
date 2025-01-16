@@ -29,7 +29,7 @@ def etl(etl: ETL, settings: Settings) -> None:
          closing(RedisClient(settings.redis_dsn)) as redis_client:
 
         # Логируем информацию о подключении к базам данных
-        logger.info('Подключение к Elasticsearch: %s', settings.elasticsearch_dsn)
+        logger.info('Подключение к Elasticsearch: %s', settings.elasticsearch_dsn, type(elasticsearch_client))
         logger.info('Подключение к PostgreSQL: %s', settings.postgres_dsn)
         try:
             postgres_client.cursor.execute("""

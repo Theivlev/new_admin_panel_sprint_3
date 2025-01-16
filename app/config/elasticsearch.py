@@ -17,9 +17,8 @@ class ElasticsearchClient(BaseConfig):
         """Подключение к Elasticsearch."""
         # Логируем текущее значение dsn
         logger.info('Попытка подключения к Elasticsearch с dsn: %s', self.dsn)
-
+        logger.info(type(self.dsn))
         # Преобразуем dsn в список, если это строка
-        if isinstance(self.dsn, str):
-            self.dsn = [self.dsn]
-            logger.info('Преобразованный dsn для подключения: %s', self.dsn)
-            return Elasticsearch(self.dsn)
+
+        logger.info('Преобразованный dsn для подключения: %s', self.dsn)
+        return Elasticsearch(str(self.dsn))

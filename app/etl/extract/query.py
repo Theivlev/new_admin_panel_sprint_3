@@ -1,4 +1,12 @@
 from psycopg.sql import SQL, Identifier
+from utils.logger import LOGGING_CONFIG
+import logging
+
+from logging import config as logging_config
+
+
+logger = logging.getLogger(__name__)
+logging_config.dictConfig(LOGGING_CONFIG)
 
 
 class Query:
@@ -57,8 +65,8 @@ class Query:
                 ) AS writers,
                 array_agg(DISTINCT g.name) AS genres,
                 string_agg(DISTINCT p.full_name, ', ') FILTER (WHERE pfw.role = 'actor') AS actors_names,
-                string_agg(DISTINCT d.full_name, ', ') FILTER (WHERE pfw.role = 'director') AS directors_names,
-                string_agg(DISTINCT w.full_name, ', ') FILTER (WHERE pfw.role = 'writer') AS writers_names
+                string_agg(DISTINCT p.full_name, ', ') FILTER (WHERE pfw.role = 'director') AS directors_names,
+                string_agg(DISTINCT p.full_name, ', ') FILTER (WHERE pfw.role = 'writer') AS writers_names
             FROM content.film_work fw
             LEFT JOIN content.person_film_work pfw ON pfw.film_work_id = fw.id
             LEFT JOIN content.person p ON p.id = pfw.person_id
@@ -75,13 +83,24 @@ class Query:
 
     @staticmethod
     def check_modified(table, last_mod):
-        return SQL(
-            '''
-            SELECT MAX(modified) AS last_modified
-            FROM {table}
-            WHERE modified > {last_mod}
-            '''
-        ).format(
-            table=Identifier(f'content.{table}'),  # Указываем схему content
-            last_mod=last_mod
+
+        logger.info(
+            'Проверка последнего изменения для таблицы: %s с last_mod: %s',
+            table,
+            last_mod
         )
+
+        query = SQL(
+                '''
+                SELECT MAX(modified) AS last_modified
+                FROM {table}
+                WHERE modified > {last_mod}
+                '''
+            ).format(
+                table=Identifier('content', table),
+                last_mod=last_mod
+            )
+
+        logger.debug('Сформированный SQL-запрос: %s', query)
+
+        return query

@@ -8,12 +8,12 @@ class MovieDTO(UUIDMixin):
     """Модель фильма"""
 
     imdb_rating: float | None = Field(default=None)
-    genres: list[GenreDTO] = Field(default_factory=list)
+    genres: list[str] = Field(default_factory=list)
     title: str
     description: str | None = Field(default=None)
-    directors_names: list[str] = Field(default_factory=list)
-    actors_names: list[str] = Field(default_factory=list)
-    writers_names: list[str] = Field(default_factory=list)
-    directors: list[PersonInfoDTO] = Field(default_factory=list)
-    actors: list[PersonInfoDTO] = Field(default_factory=list)
-    writers: list[PersonInfoDTO] = Field(default_factory=list)
+    directors_names: str | list[str] | None = Field()
+    actors_names: str | list[str] | None = Field()
+    writers_names: str | list[str] | None = Field()
+    directors: list[dict] = Field(default_factory=list)
+    actors: list[dict] = Field(default_factory=list)
+    writers: list[dict] = Field(default_factory=list)

@@ -20,7 +20,7 @@ services:
       - "6379"
     restart: always
     volumes:
-      - redis_data:/data  # Исправлено имя тома
+      - redis_data:/data
 
   elasticsearch:
     image: elasticsearch:8.7.0
@@ -34,7 +34,7 @@ services:
     depends_on:
       - theatre-db
     ports:
-      - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
+      - 9200:9200
 
 
   theatre-db:

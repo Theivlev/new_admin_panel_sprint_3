@@ -36,12 +36,12 @@ class PostgresExtractor:
         )
 
         result = self.postgres_client.cursor.fetchone()
-        
+
         if result is None:
             logger.warning("Результат запроса пустой для таблицы %s", self.etl.table)
             return None
-        
-        last_modified = result[0]
+
+        last_modified = result['last_modified']
         logger.info("Последнее изменение в таблице %s: %s", self.etl.table, last_modified)
         return last_modified
 
@@ -55,7 +55,7 @@ class PostgresExtractor:
             logger.info('Извлечение новых данных для %s', self.etl.index)
 
             self.postgres_client.cursor.execute(
-                Query.get_films_query(self.etl.table, prev_mod)
+                Query.get_films_query(prev_mod)
             )
 
             while data := self.postgres_client.cursor.fetchmany(
