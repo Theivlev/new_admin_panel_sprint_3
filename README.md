@@ -27,5 +27,3 @@
 3. Собрать контейнеры
     ```bash
     docker-compose up --build -d
-
-```
