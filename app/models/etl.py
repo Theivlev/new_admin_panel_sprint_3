@@ -1,18 +1,13 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Type
 
-from psycopg.sql import SQL # noqa
-
-from models.genre import GenreDTO
 from models.movie import MovieDTO
-from models.person import PersonInfoDTO
 
 
 class Indexes(Enum):
-    GENRES = 'Genres'
+    GENRES = 'genres'
     MOVIES = 'movies'
-    PERSONS = 'Persons'
+    PERSONS = 'persons'
 
 
 class Tables(Enum):
@@ -25,5 +20,4 @@ class Tables(Enum):
 class ETL:
     index: str
     table: str
-    #  query: SQL
-    model: Type[GenreDTO | MovieDTO | PersonInfoDTO]
+    model: type[MovieDTO]

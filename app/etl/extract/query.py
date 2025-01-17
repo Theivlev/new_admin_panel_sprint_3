@@ -1,8 +1,9 @@
-from psycopg.sql import SQL, Identifier
-from utils.logger import LOGGING_CONFIG
 import logging
 
 from logging import config as logging_config
+from psycopg.sql import SQL, Identifier
+
+from utils.logger import LOGGING_CONFIG
 
 
 logger = logging.getLogger(__name__)
@@ -11,21 +12,6 @@ logging_config.dictConfig(LOGGING_CONFIG)
 
 class Query:
     """Класс SQL-запросов."""
-
-    @staticmethod
-    def get_genres_query(last_modified: str) -> SQL:
-        return SQL(
-            '''
-            SELECT genres.id,
-                   genres.name
-            FROM content.genre AS genres
-            WHERE genres.modified > {last_modified}
-            GROUP BY genres.id
-            ORDER BY MAX(genres.modified);
-            '''
-        ).format(
-            last_modified=last_modified
-        )
 
     @staticmethod
     def get_films_query(modified_time: str) -> SQL:
@@ -99,7 +85,5 @@ class Query:
                 table=Identifier('content', table),
                 last_mod=last_mod
             )
-
-        logger.debug('Сформированный SQL-запрос: %s', query)
 
         return query

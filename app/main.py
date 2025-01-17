@@ -1,25 +1,33 @@
 import logging
-from concurrent.futures import ThreadPoolExecutor
 from logging import config as logging_config
 
-from models.genre import GenreDTO
+from config.settings import settings
 from models.movie import MovieDTO
-from models.person import PersonInfoDTO
 from models.etl import ETL, Indexes, Tables
 from utils.logger import LOGGING_CONFIG
-from config.settings import settings
-from etl.extract.query import Query
 from etl.etl import etl
 
-if __name__ == '__main__':
+
+def main():
     logger = logging.getLogger(__name__)
     logging_config.dictConfig(LOGGING_CONFIG)
 
-    MOVIES = ETL(
+    movies_etl = ETL(
         Indexes.MOVIES.value,
         Tables.FILM_WORK.value,
-        #  Query.get_films_query(),
         MovieDTO
     )
-    logger.info('Старт ETL')
-    etl(MOVIES, settings)
+
+    logger.info(
+        '📊 Старт ETL процесса для индекса: %s и таблицы: %s',
+        Indexes.MOVIES.value,
+        Tables.FILM_WORK.value
+    )
+
+    etl(movies_etl, settings)
+
+    logger.info('✅ ETL процесс завершён успешно!')
+
+
+if __name__ == '__main__':
+    main()

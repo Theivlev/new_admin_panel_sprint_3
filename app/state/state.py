@@ -2,8 +2,8 @@ import logging
 from logging import config as logging_config
 from dataclasses import dataclass
 
-from utils.logger import LOGGING_CONFIG
 from .base_storage import BaseStorage
+from utils.logger import LOGGING_CONFIG
 
 logger = logging.getLogger(__name__)
 logging_config.dictConfig(LOGGING_CONFIG)

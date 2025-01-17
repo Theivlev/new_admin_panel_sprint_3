@@ -1,14 +1,15 @@
 import logging
 from logging import config as logging_config
+from dataclasses import dataclass
+from typing import List, Dict
 
 from elasticsearch.exceptions import ConnectionError
 from elasticsearch.helpers import bulk
-from dataclasses import dataclass
+
 from config.elasticsearch import ElasticsearchClient
 from state.state import State
-from utils.logger import LOGGING_CONFIG
 from utils.backoff import backoff
-from typing import List, Dict
+from utils.logger import LOGGING_CONFIG
 
 
 logger = logging.getLogger(__name__)

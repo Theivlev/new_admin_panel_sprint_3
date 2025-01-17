@@ -1,11 +1,11 @@
 import logging
 from logging import config as logging_config
+from dataclasses import dataclass
 
 from models.genre import GenreDTO
 from models.movie import MovieDTO
 from models.person import PersonInfoDTO
 from utils.logger import LOGGING_CONFIG
-from dataclasses import dataclass
 
 
 logger = logging.getLogger(__name__)
@@ -19,4 +19,3 @@ class DataTransform:
     def data_transform(self, batch: list[dict]) -> list[dict]:
 
         return [self.model(**data).model_dump() for data in batch]
-

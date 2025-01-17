@@ -1,6 +1,4 @@
 from pydantic import Field
-from .genre import GenreDTO
-from .person import PersonInfoDTO
 from .mixins import UUIDMixin
 
 

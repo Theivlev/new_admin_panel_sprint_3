@@ -39,13 +39,21 @@ def backoff(
                     sleep_time = min(sleep_time * 2**factor, border_sleep_time)
 
                     logger.exception(
-                        'Ошибка подключения в функции "%s": %s. Повторная попытка через %s секунд... (Попытка %d/%d)',
-                        func.__name__, error, sleep_time, attempts, max_attempts
+                        'Ошибка подключения в функции "%s": %s. '
+                        'Повторная попытка через %s секунд... (Попытка %d/%d)',
+                        func.__name__,
+                        error,
+                        sleep_time,
+                        attempts,
+                        max_attempts
                     )
+
                     time.sleep(sleep_time)
 
             logger.error(
-                "Достигнуто максимальное количество попыток в функции \"%s\". Функция завершилась с ошибкой.", func.__name__
+                "Достигнуто максимальное количество "
+                "попыток в функции \"%s\". Функция завершилась с ошибкой.",
+                func.__name__
             )
             return None
 

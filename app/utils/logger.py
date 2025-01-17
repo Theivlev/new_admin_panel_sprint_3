@@ -1,14 +1,21 @@
+LOGGING_FORMAT = '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+LOGGING_VERBOSE_FORMAT = (
+    '%(asctime)s [%(levelname)s] %(name)s '
+    '%(funcName)s:%(lineno)d: %(message)s'
+)
+LOGGING_DATEFMT = '%d-%m-%Y %H:%M:%S'
+
 LOGGING_CONFIG = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'standard': {
-            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s',
-            'datefmt': '%d-%m-%Y %H:%M:%S'
+            'format': LOGGING_FORMAT,
+            'datefmt': LOGGING_DATEFMT
         },
         'verbose': {
-            'format': '%(asctime)s [%(levelname)s] %(name)s %(funcName)s:%(lineno)d: %(message)s',
-            'datefmt': '%d-%m-%Y %H:%M:%S'
+            'format': LOGGING_VERBOSE_FORMAT,
+            'datefmt': LOGGING_DATEFMT
         }
     },
     'handlers': {
@@ -23,7 +30,7 @@ LOGGING_CONFIG = {
             'formatter': 'verbose',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': 'app.log',
-            'maxBytes': 1024*1024*5,
+            'maxBytes': 1024 * 1024 * 5,
             'backupCount': 5,
         },
     },

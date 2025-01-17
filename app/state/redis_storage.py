@@ -1,10 +1,8 @@
-from config.redis import RedisClient
-
-from .base_storage import BaseStorage
-
-
 from dataclasses import dataclass
 from typing import Optional
+
+from .base_storage import BaseStorage
+from config.redis import RedisClient
 
 
 @dataclass
