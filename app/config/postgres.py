@@ -22,6 +22,6 @@ class PostgresClient(BaseConfig):
     def reconnect(self):
         """Подключение к PostgreSQL."""
         logger.info('Попытка подключения к PostgreSQL с dsn: %s', self.dsn)
-        self.connection = psycopg.connect(str(self.dsn))
+        self.connect = psycopg.connect(str(self.dsn))
         self.cursor = self.connection.cursor(row_factory=dict_row)
         return self.connection
