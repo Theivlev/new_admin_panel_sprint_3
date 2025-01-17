@@ -24,6 +24,8 @@
     ```bash
     cp .env.template .env
 
-3. Собрать контейнеры docker-compose up --build -d
+3. Собрать контейнеры
+    ```bash
+    docker-compose up --build -d
 
 ```
