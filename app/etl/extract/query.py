@@ -50,9 +50,9 @@ class Query:
                     '[]'
                 ) AS writers,
                 array_agg(DISTINCT g.name) AS genres,
-                string_agg(DISTINCT p.full_name, ', ') FILTER (WHERE pfw.role = 'actor') AS actors_names,
-                string_agg(DISTINCT p.full_name, ', ') FILTER (WHERE pfw.role = 'director') AS directors_names,
-                string_agg(DISTINCT p.full_name, ', ') FILTER (WHERE pfw.role = 'writer') AS writers_names
+                array_agg(DISTINCT p.full_name) FILTER (WHERE pfw.role = 'actor') AS actors_names,
+                array_agg(DISTINCT p.full_name) FILTER (WHERE pfw.role = 'director') AS directors_names,
+                array_agg(DISTINCT p.full_name) FILTER (WHERE pfw.role = 'writer') AS writers_names
             FROM content.film_work fw
             LEFT JOIN content.person_film_work pfw ON pfw.film_work_id = fw.id
             LEFT JOIN content.person p ON p.id = pfw.person_id
