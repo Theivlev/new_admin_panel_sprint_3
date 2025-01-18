@@ -59,6 +59,8 @@ class Query:
             LEFT JOIN content.genre_film_work gfw ON gfw.film_work_id = fw.id
             LEFT JOIN content.genre g ON g.id = gfw.genre_id
             WHERE fw.modified > {modified_time}
+                  OR p.modified > {modified_time}
+                  OR g.modified > {modified_time}
             GROUP BY fw.id
             ORDER BY fw.modified
             '''

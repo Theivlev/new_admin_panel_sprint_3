@@ -4,7 +4,7 @@ set -e
 
 wait_for_elasticsearch() {
   echo "Waiting for Elasticsearch to start..."
-  until curl -s "${ELASTICSEARCH_DSN}/_cat/health?h=status" | grep -E -q "(yellow|green)"; do
+  until curl -s "http://elasticsearch:9200/_cat/health?h=status" | grep -E -q "(yellow|green)"; do
     sleep 2
   done
   echo "Elasticsearch started."
@@ -14,12 +14,12 @@ create_movies_index() {
   local index_name="movies"
 
   local index_exists
-  index_exists=$(curl -s -o /dev/null -w "%{http_code}" "${ELASTICSEARCH_DSN}/${index_name}")
+  index_exists=$(curl -s -o /dev/null -w "%{http_code}" "http://elasticsearch:9200/${index_name}")
 
   if [ "$index_exists" -ne 200 ]; then
     echo "Creating index '${index_name}'..."
 
-    curl -XPUT "${ELASTICSEARCH_DSN}/${index_name}" \
+    curl -XPUT "http://elasticsearch:9200/${index_name}" \
       -H "Content-Type: application/json" \
       -d'
       {
