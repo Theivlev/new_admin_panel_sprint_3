@@ -19,4 +19,4 @@ class DataTransform:
     def data_transform(self, batch: list[dict]) -> list[dict]:
 
         return [self.model(**data).model_dump(
-            by_alias=True, exclude_none=True) for data in batch]
+            by_alias=True) for data in batch]
