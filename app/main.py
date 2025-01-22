@@ -26,14 +26,14 @@ def main():
             Query.get_films_query
         ),
         ETL(
-            Indexes.GENRES,
-            Tables.GENRE,
+            Indexes.PERSONS,
+            Tables.PERSON,
             PersonInfoDTO,
             Query.get_genres_query
         ),
         ETL(
-            Indexes.PERSONS,
-            Tables.PERSON,
+            Indexes.GENRES,
+            Tables.GENRE,
             GenreDTO,
             Query.get_genres_query
         ),

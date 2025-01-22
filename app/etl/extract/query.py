@@ -115,7 +115,7 @@ class Query:
                                                  jsonb_agg(
                                                          pfw.role
                                                      ),
-                                                 '[]'
+                                                 '[]'::jsonb
                                              ) AS roles
                                   FROM content.person_film_work AS pfw
                                   GROUP BY pfw.person_id, pfw.film_work_id)
@@ -128,7 +128,7 @@ class Query:
                                            'roles', person_roles.roles
                                        )
                                ) FILTER (WHERE p.id IS NOT NULL),
-                                   '[]'
+                                   '[]'::jsonb
                        ) AS films
             FROM content.person AS p
                      LEFT JOIN person_roles ON person_roles.person_id = p.id
