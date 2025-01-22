@@ -29,7 +29,7 @@ def main():
             Indexes.PERSONS,
             Tables.PERSON,
             PersonInfoDTO,
-            Query.get_genres_query
+            Query.get_persons_query
         ),
         ETL(
             Indexes.GENRES,
