@@ -12,7 +12,8 @@ from state.state import State
 from utils.backoff import backoff
 from utils.logger import LOGGING_CONFIG
 
-
+from typing import Callable
+from psycopg.sql import SQL
 logger = logging.getLogger(__name__)
 logging_config.dictConfig(LOGGING_CONFIG)
 
@@ -24,6 +25,7 @@ class PostgresExtractor:
     state: State
     etl: ETL
     batch_size: int
+    query: Callable[[str], SQL]
 
     @backoff(ConnectionFailure)
     def check_modified(self, prev_mod: str) -> str | None:
@@ -31,12 +33,12 @@ class PostgresExtractor:
         """
         logger.info(
             "Проверка изменений в таблице %s с предыдущей меткой времени %s",
-            self.etl.table,
+            self.etl.table.value,
             prev_mod
         )
 
         self.postgres_client.cursor.execute(
-            Query.check_modified(self.etl.table, prev_mod)
+            Query.check_modified(self.etl.table.value, prev_mod)
         )
 
         result = self.postgres_client.cursor.fetchone()
@@ -44,14 +46,14 @@ class PostgresExtractor:
         if result is None:
             logger.warning(
                 "Результат запроса пустой для таблицы %s",
-                self.etl.table
+                self.etl.table.value
             )
             return None
 
         last_modified = result['last_modified']
         logger.info(
             "Последнее изменение в таблице %s: %s",
-            self.etl.table,
+            self.etl.table.value,
             last_modified
         )
         return last_modified
@@ -60,13 +62,13 @@ class PostgresExtractor:
     def extract(self):
         """Извлекает данные о фильмах из Postgres."""
 
-        prev_mod = self.state.get_state(self.etl.index)
+        prev_mod = self.state.get_state(self.etl.index.value)
 
         if last_modified := self.check_modified(prev_mod):
-            logger.info('Извлечение новых данных для %s', self.etl.index)
+            logger.info('Извлечение новых данных для %s', self.etl.index.value)
 
             self.postgres_client.cursor.execute(
-                Query.get_films_query(prev_mod)
+                self.query(prev_mod)
             )
 
             while data := self.postgres_client.cursor.fetchmany(

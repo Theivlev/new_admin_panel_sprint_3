@@ -25,7 +25,7 @@ logging_config.dictConfig(LOGGING_CONFIG)
 def etl(etl: ETL, settings: Settings) -> None:
     """ETL процесс для конкретного маппера."""
 
-    logger.info('%s ETL начат', etl.index)
+    logger.info('%s ETL начат', etl.index.value)
 
     with closing(ElasticsearchClient(settings.elasticsearch_dsn)
                  ) as elasticsearch_client, \
@@ -34,8 +34,8 @@ def etl(etl: ETL, settings: Settings) -> None:
 
         state = State(storage=RedisStorage(redis_client=redis_client))
 
-        if not state.get_state(key=str(etl.index)):
-            state.set_state(key=str(etl.index), value=str(datetime.min))
+        if not state.get_state(key=str(etl.index.value)):
+            state.set_state(key=str(etl.index.value), value=str(datetime.min))
 
         extractor = PostgresExtractor(
             postgres_client=postgres_client,
@@ -49,7 +49,7 @@ def etl(etl: ETL, settings: Settings) -> None:
         loader = ElasticsearchLoader(
             client=elasticsearch_client,
             state=state,
-            index=etl.index,
+            index=etl.index.value,
             batch_size=settings.batch_size
         )
 

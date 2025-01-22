@@ -11,7 +11,7 @@ wait_for_elasticsearch() {
 }
 
 create_movies_index() {
-  local index_name="movies"
+  local index_name="$1"
 
   local index_exists
   index_exists=$(curl -s -o /dev/null -w "%{http_code}" "http://elasticsearch:9200/${index_name}")

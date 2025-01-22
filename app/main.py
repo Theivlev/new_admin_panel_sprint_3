@@ -2,31 +2,46 @@ import logging
 from logging import config as logging_config
 
 from config.settings import settings
+from models.genre import GenreDTO
+from models.person import PersonInfoDTO
 from models.movie import MovieDTO
-from models.etl import ETL, Indexes, Tables
+from models.etl import ETL, Indexes, Tables, ETLManager
 from utils.logger import LOGGING_CONFIG
-from etl.etl import etl
+from etl.extract.query import Query
+
+logger = logging.getLogger(__name__)
+logging_config.dictConfig(LOGGING_CONFIG)
 
 
 def main():
-    logger = logging.getLogger(__name__)
-    logging_config.dictConfig(LOGGING_CONFIG)
 
-    movies_etl = ETL(
-        Indexes.MOVIES.value,
-        Tables.FILM_WORK.value,
-        MovieDTO
-    )
+    etl_manager = ETLManager(settings)
 
-    logger.info(
-        '📊 Старт ETL процесса для индекса: %s и таблицы: %s',
-        Indexes.MOVIES.value,
-        Tables.FILM_WORK.value
-    )
+    etl_configs = [
+        ETL(
+            Indexes.MOVIES,
+            Tables.FILM_WORK,
+            MovieDTO,
+            Query.get_films_query
+        ),
+        ETL(
+            Indexes.GENRES,
+            Tables.GENRE,
+            PersonInfoDTO,
+            Query.get_genres_query
+        ),
+        ETL(
+            Indexes.PERSONS,
+            Tables.PERSON,
+            GenreDTO,
+            Query.get_genres_query
+        ),
+    ]
 
-    etl(movies_etl, settings)
+    for config in etl_configs:
+        etl_manager.run_etl(config)
 
-    logger.info('✅ ETL процесс завершён успешно!')
+    logger.info('✅ Все ETL процессы завершены успешно!')
 
 
 if __name__ == '__main__':
