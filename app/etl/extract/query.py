@@ -58,42 +58,53 @@ class Query:
             LEFT JOIN content.person p ON p.id = pfw.person_id
             LEFT JOIN content.genre_film_work gfw ON gfw.film_work_id = fw.id
             LEFT JOIN content.genre g ON g.id = gfw.genre_id
-            WHERE fw.modified > {modified_time}
-                  OR p.modified > {modified_time}
-                  OR g.modified > {modified_time}
+            WHERE fw.modified > {last_modified}
+                  OR p.modified > {last_modified}
+                  OR g.modified > {last_modified}
             GROUP BY fw.id
             ORDER BY fw.modified
             '''
         ).format(
-            modified_time=modified_time
+            last_modified=modified_time
         )
 
     @staticmethod
-    def check_modified(table, last_mod):
+    def check_modified(table, modified_time):
 
         logger.info(
             'Проверка последнего изменения для таблицы: %s с last_mod: %s',
             table,
-            last_mod
+            modified_time
         )
 
         query = SQL(
                 '''
                 SELECT MAX(modified) AS last_modified
                 FROM {table}
-                WHERE modified > {last_mod}
+                WHERE modified > {last_modified}
                 '''
             ).format(
                 table=Identifier('content', table),
-                last_mod=last_mod
+                last_modified=modified_time
             )
 
         return query
 
     @staticmethod
-    def get_genres_query(table, last_mod):
-        pass
+    def get_genres_query(modified_time):
+        return SQL(
+            '''
+            SELECT
+                g.id,
+                g.name
+            FROM content.genre AS g
+            WHERE g.modified > {last_modified}
+            ORDER BY g.modified;
+            '''
+        ).format(
+            last_modified=modified_time
+        )
 
     @staticmethod
-    def get_persons_query(table, last_mod):
+    def get_persons_query(modified_time):
         pass
