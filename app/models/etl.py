@@ -9,7 +9,6 @@ from models.genre import GenreDTO
 from models.movie import MovieDTO
 from models.person import PersonInfoDTO
 from utils.logger import LOGGING_CONFIG
-from etl.etl import etl
 from typing import Callable
 
 logger = logging.getLogger(__name__)
@@ -39,22 +38,23 @@ class ETL:
 @dataclass
 class ETLManager:
     settings: Settings
+    etl_function: Callable[[ETL, Settings], None]
 
     def run_etl(self, etl_config: ETL):
         logger.info(
-            '📊 Старт ETL процесса для индекса: %s и таблицы: %s',
+            '📊  Старт ETL процесса для индекса: %s и таблицы: %s',
             etl_config.index.value,
             etl_config.table.value
         )
         try:
-            etl(etl_config, self.settings)
+            self.etl_function(etl_config, self.settings)
             logger.info(
-                '✅ ETL процесс для индекса %s завершён успешно!',
+                '✅  ETL процесс для индекса %s завершён успешно!',
                 etl_config.index.value
             )
         except Exception as e:
             logger.error(
-                '❌ Ошибка в ETL процессе для индекса %s: %s',
+                '❌  Ошибка в ETL процессе для индекса %s: %s',
                 etl_config.index.value,
                 str(e),
                 exc_info=True

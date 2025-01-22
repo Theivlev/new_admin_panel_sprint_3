@@ -107,4 +107,35 @@ class Query:
 
     @staticmethod
     def get_persons_query(modified_time):
-        pass
+        return SQL(
+            '''
+            WITH person_roles AS (SELECT pfw.person_id,
+                                         pfw.film_work_id,
+                                         COALESCE(
+                                                 jsonb_agg(
+                                                         pfw.role
+                                                     ),
+                                                 '[]'
+                                             ) AS roles
+                                  FROM content.person_film_work AS pfw
+                                  GROUP BY pfw.person_id, pfw.film_work_id)
+            SELECT p.id,
+                   p.full_name,
+                   COALESCE(
+                                   jsonb_agg(
+                                   jsonb_build_object(
+                                           'id', person_roles.film_work_id,
+                                           'roles', person_roles.roles
+                                       )
+                               ) FILTER (WHERE p.id IS NOT NULL),
+                                   '[]'
+                       ) AS films
+            FROM content.person AS p
+                     LEFT JOIN person_roles ON person_roles.person_id = p.id
+            WHERE p.modified > {last_modified}
+            GROUP BY p.id
+            ORDER BY MAX(p.modified);
+            '''
+        ).format(
+            last_modified=modified_time
+        )

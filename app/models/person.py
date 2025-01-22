@@ -10,5 +10,4 @@ class FilmDTO(UUIDMixin):
 class PersonInfoDTO(UUIDMixin):
     """Модель людей"""
     name: str = Field(default_factory=str)
-    roles: list[str] = Field(default_factory=list)
     films: list[FilmDTO] = Field(default_factory=list)

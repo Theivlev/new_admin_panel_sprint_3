@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 logging_config.dictConfig(LOGGING_CONFIG)
 
 
-def etl(etl: ETL, settings: Settings) -> None:
+def etl(etl: 'ETL', settings: Settings) -> None:
     """ETL процесс для конкретного маппера."""
 
     logger.info('%s ETL начат', etl.index.value)
@@ -41,7 +41,8 @@ def etl(etl: ETL, settings: Settings) -> None:
             postgres_client=postgres_client,
             state=state,
             etl=etl,
-            batch_size=settings.batch_size
+            batch_size=settings.batch_size,
+            query=etl.query,
         )
 
         transformer = DataTransform(model=etl.model)
@@ -73,7 +74,7 @@ def etl(etl: ETL, settings: Settings) -> None:
 
             logger.info(
                 '%s ETL завершён, засыпаем на %s с',
-                etl.index, settings.timeout
+                etl.index.value, settings.timeout
             )
 
             time.sleep(settings.timeout)
