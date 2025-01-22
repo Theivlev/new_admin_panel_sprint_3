@@ -8,7 +8,7 @@ class FilmDTO(UUIDMixin):
 
     def model_dump(self, **kwargs):
         data = super().model_dump(**kwargs)
-        data.pop("el_id", None)
+        data.pop("_id", None)
         return data
 
 
@@ -19,5 +19,5 @@ class PersonInfoDTO(UUIDMixin):
 
     def model_dump(self, **kwargs):
         data = super().model_dump(**kwargs)
-        data.pop("el_id", None)
+        data.pop("_id", None)
         return data
